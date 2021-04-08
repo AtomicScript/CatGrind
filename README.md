@@ -6,6 +6,7 @@ Pygame project I am currently working on
 * [Incomplete](#Incomplete)
 * [ideas](#ideas)
 * [Issues](#Issues)
+* [Discord](#Discord)
 
 ## General info
 * version 0.1.6
@@ -31,4 +32,7 @@ using the count +=1 ( ive been having a hard time with the get_tick) when the co
 
 ## Issues:
 * chest animation doesnt work for the player only
+
+## Discord : 
+https://discord.gg/bTQz8yzUvr
 
