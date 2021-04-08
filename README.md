@@ -1,5 +1,5 @@
 # CatGrind
-*Pygame project I am currently working on 
+Pygame project I am currently working on 
 
 
 ## General info
