@@ -55,16 +55,16 @@ class Bullet(pygame.sprite.Sprite):
             self.kill()
 
 
-class Coin(pygame.sprite.Sprite):
+class Ruby(pygame.sprite.Sprite):
     def __init__(self):
         super().__init__()
         self.standard = 1
-        self.image = pygame.image.load(os.path.join("image/coin.png"))
+        self.image = pygame.image.load(os.path.join("image/ruby.png"))
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(128, 900), random.randint(200, 700)
 
     def spawn(self):
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(128, 900), random.randint(200, 700)
         self.update()
 
     def player_coin(self, player):
@@ -93,15 +93,22 @@ class Chest(pygame.sprite.Sprite):
                              self.image.get_width(), self.image.get_height())):
 
             key = pygame.key.get_pressed()
-            if player.pos.x <= 932 and player.pos.y >= 667:
-                player.pos.x = 925
 
-            if player.pos.x > 935 and player.pos.y >= 645:
-                player.pos.y = 653
+            # side
+            if player.pos.x <= 890 and player.pos.y > 666:
+                player.pos.x = 884
+
+            # top
+            if player.pos.x >= 897 and player.pos.y >= 656:
+                player.pos.y = 654
+
             self.open()
+
             if key[pygame.K_e or pygame.key == ord('e')]:
                 for coin in range(player.bag):
+
                     player.score += (5 * self.standard)
+
                 player.bag = 0
 
         else:
@@ -113,16 +120,20 @@ class Chest(pygame.sprite.Sprite):
                              enemy.image.get_height(), self.rect.x, self.rect.y,
                              self.image.get_width(), self.image.get_height())):
             self.open()
-            if enemy.pos.x <= 932 and enemy.pos.y >= 667:
-                enemy.pos.x = 925
 
-            if enemy.pos.x > 945 and enemy.pos.y >= 653:
-                enemy.pos.y = 653
+            if enemy.pos.x <= 890 and enemy.pos.y > 666:
+                enemy.pos.x = 870
+
+            if enemy.pos.x > 897 and enemy.pos.y >= 656:
+                enemy.pos.y = 654
+
             enemy.acc = vec(0, 0)
-            enemy.stole = True
 
-            if actual_player.score > 0:
-                actual_player.score = (actual_player.score - (actual_player.score * 0.30))
+            if enemy.alive:
+                if actual_player.score > 0:
+                    actual_player.score = (actual_player.score - (actual_player.score * 0.30))
+                enemy.stole = True
+
 
         else:
             self.close()
@@ -152,10 +163,10 @@ class Potions(pygame.sprite.Sprite):
         self.player = ""
         self.group = ""
         self.rect = pygame.Rect(80, 40, 10, 10)
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(128, 900), random.randint(100, 730)
 
     def spawn(self):
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(128, 900), random.randint(100, 730)
         self.update()
 
     def collide(self):
@@ -175,9 +186,9 @@ class Small_energy_potion(Potions):
         self.cost = 50
         self.player = player
         self.group = group
-        self.image = pygame.image.load(os.path.join("image/flask_yellow.png"))
+        self.image = pygame.image.load(os.path.join("image/energy.png"))
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(128, 900), random.randint(200, 710)
 
     def effect(self):
         self.player.increase_energy(self.boost)
@@ -190,9 +201,9 @@ class Small_heal_potion(Potions):
         self.cost = 50
         self.player = player
         self.group = group
-        self.image = pygame.image.load(os.path.join("image/flask_red.png"))
+        self.image = pygame.image.load(os.path.join("image/heart.png"))
         self.rect = self.image.get_rect()
-        self.rect.x, self.rect.y = random.randint(100, 900), random.randint(100, 730)
+        self.rect.x, self.rect.y = random.randint(300, 900), random.randint(300, 710)
 
     def effect(self):
         self.player.heal(self.boost)
