@@ -97,20 +97,6 @@ class Energy_bar:
         self.rect = pygame.Rect(80, 40, self.player.energy / self.ratio, 15)
 
 
-class Game_Buttons(pygame.sprite.Sprite):
-    def __init__(self, x, y, player):
-        super().__init__()
-        self.player = player
-        self.rect = pygame.Rect(x, y, 64, 64)
-
-    # drawing it onto the screen
-    def button_draw(self, screen):
-        pygame.draw.rect(screen, WHITE, self.rect)
-
-    def click(self):
-        print("clicked")
-
-
 class energy_button(pygame.sprite.Sprite):
     def __init__(self, x, y, player):
         super().__init__()
