@@ -14,7 +14,7 @@ class Thief(pygame.sprite.Sprite):
         # //==  ** movement related **  ==// #
         self.vel = vec(0, 0)
         self.acc = vec(0, 0)
-        self.pos = vec(429, 760)
+        self.pos = vec(500, 760)
         self.images = []
         self.adding_images()
         self.frame = 0
@@ -82,13 +82,13 @@ class Thief(pygame.sprite.Sprite):
         self.life()
         if self.alive:
             if not self.stole:
-                # easy path is up till 710 then width till 900 i guess
+
                 self.acc = vec(0, 0)
 
-                if self.pos.y > 725:
+                if self.pos.y > 710:
                     self.up()
 
-                elif self.pos.x >= 1000:
+                elif self.pos.x >= 896:
                     self.acc = vec(0, 0)
 
                 else:
@@ -96,9 +96,9 @@ class Thief(pygame.sprite.Sprite):
 
             else:
                 self.acc = vec(0, 0)
-                if self.pos.x <= 429:
+                if self.pos.x <= 500:
                     self.down()
-                    if self.pos.y == 760:
+                    if self.pos.y >= 790:
                         self.acc = vec(0, 0)
 
                 else:
@@ -118,7 +118,7 @@ class Thief(pygame.sprite.Sprite):
             # setting the new position as rect center
             self.rect.center = self.pos
         else:
-            self.pos = vec(429, 760)
+            self.pos = vec(500, 760)
 
     def animating_player(self):
         self.image.set_colorkey(BLACK)
@@ -152,6 +152,7 @@ class Thief(pygame.sprite.Sprite):
         self.image = self.images[self.frame]
 
     def go_again(self):
+        self.alive = True
         self.stole = False
 
     def life(self):
