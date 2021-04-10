@@ -177,7 +177,6 @@ class Evade:
         draw_text(f"Upgrade Cost: {self.button3.cost} ", 20, WHITE, 300, 55, self.screen)
 
     def game_update(self):
-        print(self.chance, self.thief.pos, self.thief.stole)
         self.health_bar.update()
         self.energy_bar.update()
 
