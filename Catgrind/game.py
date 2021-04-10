@@ -109,7 +109,7 @@ class Evade:
         self.screen.fill(BLACK)
         self.background_screen.blit(self.background_image, [0, 0])
         # texts
-        draw_text("Evade Main Menu", 100, WHITE, 220, 100, self.screen)
+        draw_text("CatGrind Main Menu", 100, WHITE, 220, 100, self.screen)
         draw_text("Created by: Andromeda#2302 // SaloonaSenpai", 20, WHITE, 370, 730, self.screen)
         # buttons
         self.start_button.button_draw(self.screen, GREEN)
