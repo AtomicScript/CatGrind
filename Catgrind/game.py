@@ -21,7 +21,6 @@ class Evade:
         pygame.display.set_caption("CatGrind - Atom")
         self.background_screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.background_image = pygame.image.load("image/background.png")
-        self.floor_image = pygame.image.load("image/Floor_background.png")
 
         # //==  ** Button classes **  ==// #
         # for the menu
@@ -39,31 +38,31 @@ class Evade:
         # //==  ** CLASSES **  ==// #
         self.player = Player(self.screen)
         self.thief = Thief()
-        self.wall = Wall()
         self.health_bar = Health_bar(self.player)
         self.energy_bar = Energy_bar(self.player)
 
-        self.coin = Coin()
-        self.chest = Chest(940, 670)
-        self.button1 = energy_button(520, 10, self.player)
-        self.button2 = health_button(620, 10, self.player)
-        self.button3 = upgrade_button(720, 10, self.player, self.coin, self.chest)
-        self.button4 = Game_Buttons(820, 10, self.player)
+        self.Ruby = Ruby()
+        self.chest = Chest(896, 672)
+        self.button1 = energy_button(620, 10, self.player)
+        self.button2 = health_button(720, 10, self.player)
+        self.button3 = upgrade_button(820, 10, self.player, self.Ruby, self.chest)
 
 
         # //==  ** Sprite Groups **  ==// #
         self.all_sprites = pygame.sprite.Group()
-        self.wall_sprite_up = pygame.sprite.Group()
+        self.map_sprite = pygame.sprite.Group()
         self.wall_sprite_down = pygame.sprite.Group()
-        self.side_sprite_up = pygame.sprite.Group()
-        self.side_sprite_down = pygame.sprite.Group()
+        self.side_sprite = pygame.sprite.Group()
         self.coin_sprite = pygame.sprite.Group()
         self.enemy_sprite = pygame.sprite.Group()
         self.potions_sprite = pygame.sprite.Group()
+
         self.bullet = self.player.bullet_group
+        # map 1
+        self.dungeon_map = Dungeon(self.map_sprite)
 
         # //==  ** BOOSTS classes **  ==// #
-        self.mini_heal_potion = Small_heal_potion(self.player,self.potions_sprite)
+        self.mini_heal_potion = Small_heal_potion(self.player, self.potions_sprite)
         self.mini_energy_potion = Small_energy_potion(self.player, self.potions_sprite)
 
     def menu(self):
@@ -150,26 +149,19 @@ class Evade:
                         self.button2.click()
                     if self.button3.rect.collidepoint(self.mx, self.my):
                         self.button3.click()
-                    if self.button4.rect.collidepoint(self.mx, self.my):
-                        self.button1.click()
 
     def game_draw(self):
         # //==  ** Screen fill **  ==// #
         self.screen.fill(BLACK)
-        self.background_screen.blit(self.floor_image, [0, 0])
         # //==  ** Sprite Draw **  ==// #
-        self.wall_sprite_up.draw(self.screen)
+        self.map_sprite.draw(self.screen)
         self.health_bar.draw(self.screen)
         self.energy_bar.draw(self.screen)
         self.button1.button_draw(self.screen)
         self.button2.button_draw(self.screen)
         self.button3.button_draw(self.screen)
-        self.button4.button_draw(self.screen)
         self.enemy_sprite.draw(self.screen)
         self.all_sprites.draw(self.screen)
-        self.wall_sprite_down.draw(self.screen)
-        self.side_sprite_down.draw(self.screen)
-        self.side_sprite_up.draw(self.screen)
         self.coin_sprite.draw(self.screen)
         self.potions_sprite.draw(self.screen)
         self.bullet.draw(self.screen)
@@ -185,6 +177,7 @@ class Evade:
         draw_text(f"Upgrade Cost: {self.button3.cost} ", 20, WHITE, 300, 55, self.screen)
 
     def game_update(self):
+        print(self.chance, self.thief.pos, self.thief.stole)
         self.health_bar.update()
         self.energy_bar.update()
 
@@ -199,7 +192,7 @@ class Evade:
         self.thief.animating_player()
         self.chest.enemy_interaction(self.thief, self.player)
 
-        self.coin.player_coin(self.player)
+        self.Ruby.player_coin(self.player)
         pygame.display.flip()
         pygame.display.update()
 
@@ -220,14 +213,18 @@ class Evade:
                     self.mini_energy_potion.effect()
                     self.mini_energy_potion.kill()
                     self.chance = 100
+            else:
+                self.mini_energy_potion.kill()
 
-        elif self.chance > 94:
-            if self.chance < 100:
-                self.potions_sprite.add(self.mini_heal_potion)
-                if pygame.sprite.collide_rect(self.player, self.mini_heal_potion):
-                    self.mini_heal_potion.effect()
+            if self.chance >= 94:
+                if self.chance < 100:
+                    self.potions_sprite.add(self.mini_heal_potion)
+                    if pygame.sprite.collide_rect(self.player, self.mini_heal_potion):
+                        self.mini_heal_potion.effect()
+                        self.mini_heal_potion.kill()
+                        self.chance = 100
+                else:
                     self.mini_heal_potion.kill()
-                    self.chance = 100
 
 
     def enemy_bullet_collide(self):
@@ -236,7 +233,7 @@ class Evade:
                 self.thief.health -= 10
 
     def random_number(self):
-        if self.count_time == 1000:
+        if self.count_time == 2000:
             self.chance = random.randint(1, 100)
             self.count_time = 0
             self.thief.health = 100.0
@@ -252,45 +249,9 @@ class Evade:
         self.player.score = 0
         self.player.bag = 0
         self.all_sprites.add(self.player)
-        self.coin_sprite.add(self.coin)
+        self.coin_sprite.add(self.Ruby)
         self.coin_sprite.add(self.chest)
-
-        # Adds walls onto the WIDTH
-        count = 0
-        for wall in range(64):
-            wall1 = Wall()
-            wall1.rect.x = count
-            count += 16
-            wall1.rect.y = 80
-            self.wall_sprite_up.add(wall1)
-
-        # Adds walls onto the HEIGHT
-        count = 0
-        for side in range(50):
-            side = SideWallTwo()
-            side2 = SideWallOne()
-            side2.rect.y = count
-            side2.rect.x = 1007
-            side.rect.y = count
-            count += 16
-            self.side_sprite_down.add(side)
-            self.side_sprite_up.add(side2)
-
-        count = 0
-        for wall in range(25):
-            wall1 = Wall()
-            wall1.rect.x = count
-            wall1.rect.y = 755
-            count += 16
-            self.wall_sprite_up.add(wall1)
-
-        ang = 512
-        for wall in range(35):
-            wall1 = Wall()
-            wall1.rect.x = ang
-            wall1.rect.y = 755
-            ang += 16
-            self.wall_sprite_up.add(wall1)
+        self.dungeon_map.add_map()
 
     def game_over(self):
         while self.start:
