@@ -61,7 +61,7 @@ class Player(pygame.sprite.Sprite):
             self.state_idle = False
             self.state_face = "Left"
             self.walk_frame += 1
-            self.decrease_energy(0.10)
+            self.decrease_energy(0.05)
 
         # //==  ** Right movement **  ==// #
         if keys[pygame.K_RIGHT or pygame.key == ord('d')]:
@@ -73,7 +73,7 @@ class Player(pygame.sprite.Sprite):
             self.state_idle = False
             self.state_face = "Right"
             self.walk_frame += 1
-            self.decrease_energy(0.10)
+            self.decrease_energy(0.05)
 
         # //==  ** Up movement **  ==// #
         if keys[pygame.K_UP or pygame.key == ord('w')]:
@@ -85,7 +85,7 @@ class Player(pygame.sprite.Sprite):
             self.state_idle = False
             self.state_face = "Behind"
             self.walk_frame += 1
-            self.decrease_energy(0.10)
+            self.decrease_energy(0.05)
 
         # //==  ** Down movement **  ==// #
         if keys[pygame.K_DOWN or pygame.key == ord('s')]:
@@ -97,7 +97,7 @@ class Player(pygame.sprite.Sprite):
             self.state_idle = False
             self.state_face = "Front"
             self.walk_frame += 1
-            self.decrease_energy(0.10)
+            self.decrease_energy(0.05)
 
         if keys[pygame.K_SPACE]:
             self.shoot()
@@ -121,14 +121,14 @@ class Player(pygame.sprite.Sprite):
 
     # restricting player from moving off the screen
     def restriction_screen(self):
-        if self.pos.x > WIDTH - 20:
-            self.pos.x = WIDTH - 20
-        if self.pos.x < 20:
-            self.pos.x = 20
-        if self.pos.y > HEIGHT - 32:
-            self.pos.y = HEIGHT - 32
-        if self.pos.y < 90:
-            self.pos.y = 90
+        if self.pos.x >= 945:
+            self.pos.x = 945
+        if self.pos.x <= 80:
+            self.pos.x = 80
+        if self.pos.y >= 710:
+            self.pos.y = 710
+        if self.pos.y <= 155:
+            self.pos.y = 155
 
     # adding images to the lists
     def adding_images(self):
