@@ -24,14 +24,14 @@ using the count +=1 ( ive been having a hard time with the get_tick) when the co
 
 ## Added: 
  * Added Most of my Pixel art ! [hint: im bad]
+ 
 ## Incomplete:
 * score saved!
 * add a mob that tries to kill the player ( not steal)
 * menu screen missing option and stats
+* Use spritesheet instead of images 
 
 ## ideas:
-* start making my own pixel art
-* change coin to paw or mouse (make sense)
 * maybe change the layout to a town ?? and the chest is basically a bank ?
 
 ## Issues:
