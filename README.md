@@ -1,5 +1,8 @@
 # CatGrind
-Pygame project I am currently working on 
+
+
+![GitHub Logo](game.PNG)
+
 ## Table of contents
 * [General info](#General-info)
 * [Game Description](#Game-Description)
