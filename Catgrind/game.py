@@ -9,7 +9,7 @@ class Evade:
     def __init__(self):
         # //==  ** Start pygame**  ==// #
         pygame.init()
-
+        pygame.mixer.init()
         # //==  ** clock and loops **  ==// #
         self.clock = pygame.time.Clock()
         self.start = True
@@ -21,6 +21,9 @@ class Evade:
         pygame.display.set_caption("CatGrind - Atom")
         self.background_screen = pygame.display.set_mode((WIDTH, HEIGHT))
         self.background_image = pygame.image.load("image/background.png")
+        self.error = pygame.mixer.Sound("sound\error.wav")
+        self.bought = pygame.mixer.Sound("sound\done.wav")
+        self.got_coin = pygame.mixer.Sound("sound\cash.wav")
 
         # //==  ** Button classes **  ==// #
         # for the menu
@@ -46,7 +49,6 @@ class Evade:
         self.button1 = energy_button(620, 10, self.player)
         self.button2 = health_button(720, 10, self.player)
         self.button3 = upgrade_button(820, 10, self.player, self.Ruby, self.chest)
-
 
         # //==  ** Sprite Groups **  ==// #
         self.all_sprites = pygame.sprite.Group()
@@ -144,11 +146,11 @@ class Evade:
                 if pygame.mouse.get_pressed()[0]:
                     # and the position of the mouse is the start button rect
                     if self.button1.rect.collidepoint(self.mx, self.my):
-                        self.button1.click()
+                        self.button1.click(self.bought, self.error)
                     if self.button2.rect.collidepoint(self.mx, self.my):
-                        self.button2.click()
+                        self.button2.click(self.bought, self.error)
                     if self.button3.rect.collidepoint(self.mx, self.my):
-                        self.button3.click()
+                        self.button3.click(self.bought, self.error)
 
     def game_draw(self):
         # //==  ** Screen fill **  ==// #
@@ -191,7 +193,7 @@ class Evade:
         self.thief.animating_player()
         self.chest.enemy_interaction(self.thief, self.player)
 
-        self.Ruby.player_coin(self.player)
+        self.Ruby.player_coin(self.player, self.got_coin)
         pygame.display.flip()
         pygame.display.update()
 
@@ -224,7 +226,6 @@ class Evade:
                         self.chance = 100
                 else:
                     self.mini_heal_potion.kill()
-
 
     def enemy_bullet_collide(self):
         for bullet in self.bullet:
