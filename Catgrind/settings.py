@@ -1,4 +1,5 @@
 import pygame, os
+from pygame.locals import * 
 
 # //==  ** Attributes **  ==// #
 WIDTH = 1024
@@ -20,17 +21,6 @@ THIEF_ACC = 0.5
 THIEF_FRICTION = -0.30
 # for bullet
 BULLET_RATE = 150
-
-# sounds
-pygame.mixer.init()
-error = pygame.mixer.Sound(os.path.join("sound/error.mp3"))
-bought = pygame.mixer.Sound(os.path.join("sound/done.mp3"))
-got_coin = pygame.mixer.Sound(os.path.join("sound/cash.mp3"))
-
-
-list_sound = [error, bought, got_coin]
-for sound in list_sound:
-    sound.set_volume(0.2)
 
 
 # to save lines of codes !!
@@ -111,7 +101,7 @@ class energy_button(pygame.sprite.Sprite):
     def button_draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def click(self):
+    def click(self, bought, error):
         if self.player.bag >= self.cost:
             self.player.player_state()
             if self.player.able_energy_potion:
@@ -120,6 +110,7 @@ class energy_button(pygame.sprite.Sprite):
                 bought.play()
             else:
                 error.play()
+                
         else:
             error.play()
 
@@ -138,7 +129,7 @@ class health_button(pygame.sprite.Sprite):
     def button_draw(self, screen):
         screen.blit(self.image, self.rect)
 
-    def click(self):
+    def click(self, bought, error):
         if self.player.bag >= self.cost:
             self.player.player_state()
             if self.player.able_heal_potion:
@@ -169,7 +160,7 @@ class upgrade_button(pygame.sprite.Sprite):
     def button_draw(self, screen):
         screen.blit(self.image,self.rect)
 
-    def click(self):
+    def click(self, bought, error):
         if self.player.bag >= self.cost:
             self.control += 1
             self.level = f"Level {self.control}"
