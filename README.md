@@ -1,7 +1,7 @@
 # CatGrind
 
 
-![GitHub Logo](game.PNG)
+![GitHub Logo](image/game.PNG)
 
 ## Table of contents
 * [General info](#General-info)
