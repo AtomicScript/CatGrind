@@ -16,6 +16,7 @@
 * version 0.1.7
 * started learning : 25 march 2021
 * Attempt 6 started again on April 2nd
+* the game was not working but i think now it will, hopefully this will give template for anyone!
 
 
 ## Game Description:
@@ -28,7 +29,9 @@ using the count +=1 ( ive been having a hard time with the get_tick) when the co
 ## Incomplete:
 * score saved!
 * add a mob that tries to kill the player ( not steal)
-* menu screen missing option and stats
+* menu screen missing  stats
+* change from coin to score in cost 
+* change the GUI of the top
 * Use spritesheet instead of images 
 
 ## ideas:
@@ -36,6 +39,7 @@ using the count +=1 ( ive been having a hard time with the get_tick) when the co
 
 ## Issues:
 * chest animation doesnt work for the player only
+* sound was remeved due to it being the main problem 
 
 ## Discord : 
 https://discord.gg/bTQz8yzUvr

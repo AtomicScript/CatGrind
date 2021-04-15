@@ -1,3 +1,4 @@
+# //==  ** Importing  **  ==// #
 import sys
 from player import *
 from world import *
@@ -9,33 +10,31 @@ class Evade:
     def __init__(self):
         # //==  ** Start pygame**  ==// #
         pygame.init()
-        pygame.mixer.init()
         # //==  ** clock and loops **  ==// #
         self.clock = pygame.time.Clock()
+        # //==  ** to keep the loop running **  ==// #
         self.start = True
+        # //==  ** count time to keep track **  ==// #
         self.count_time = 0
+        # //==  ** chance in game **  ==// #
         self.chance = 100
-
         # //==  ** Screen **  ==// #
-        self.screen = pygame.display.set_mode(SCREEN_SIZE)
-        pygame.display.set_caption("CatGrind - Atom")
-        self.background_screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        self.background_image = pygame.image.load("image/background.png")
-        self.error = pygame.mixer.Sound("sound\error.wav")
-        self.bought = pygame.mixer.Sound("sound\done.wav")
-        self.got_coin = pygame.mixer.Sound("sound\cash.wav")
+        self.screen = pygame.display.set_mode(SCREEN_SIZE)                  # size
+        pygame.display.set_caption("CatGrind - Atom")                       # caption
+        self.background_screen = pygame.display.set_mode((WIDTH, HEIGHT))   # background screen size
+        self.background_image = pygame.image.load("image/background.png")   # background screen image
 
         # //==  ** Button classes **  ==// #
-        # for the menu
-        self.start_button = Buttons(270, 250, 510, 60)
-        self.option_button = Buttons(270, 350, 510, 60)
+        # for the menu // refer back to settings to see the Buttons class
+        self.start_button = Buttons(270, 350, 510, 60)
         self.info_button = Buttons(270, 450, 510, 60)
         self.exit_button = Buttons(270, 550, 510, 60)
-        # for the game over
+        # for the game over // refer back to settings to see the Buttons class
         self.replay_button = Buttons(270, 480, 510, 60)
         self.back_button = Buttons(270, 580, 510, 60)
         self.exit_button2 = Buttons(270, 680, 510, 60)
-        # //==  ** MOUSE GET **  ==// #
+
+        # //==  ** MOUSE GET POSITION **  ==// #
         self.mx, self.my = pygame.mouse.get_pos()
 
         # //==  ** CLASSES **  ==// #
@@ -43,9 +42,10 @@ class Evade:
         self.thief = Thief()
         self.health_bar = Health_bar(self.player)
         self.energy_bar = Energy_bar(self.player)
-
         self.Ruby = Ruby()
         self.chest = Chest(896, 672)
+
+        # for the menu // refer back to settings to see the Buttons class
         self.button1 = energy_button(620, 10, self.player)
         self.button2 = health_button(720, 10, self.player)
         self.button3 = upgrade_button(820, 10, self.player, self.Ruby, self.chest)
@@ -58,8 +58,8 @@ class Evade:
         self.coin_sprite = pygame.sprite.Group()
         self.enemy_sprite = pygame.sprite.Group()
         self.potions_sprite = pygame.sprite.Group()
-
         self.bullet = self.player.bullet_group
+
         # map 1
         self.dungeon_map = Dungeon(self.map_sprite)
 
@@ -67,6 +67,7 @@ class Evade:
         self.mini_heal_potion = Small_heal_potion(self.player, self.potions_sprite)
         self.mini_energy_potion = Small_energy_potion(self.player, self.potions_sprite)
 
+    # //==  ** Menu Loop **  ==// #
     def menu(self):
         while self.start:
             self.menu_event()
@@ -74,6 +75,7 @@ class Evade:
             pygame.display.update()
             self.clock.tick(FPS)
 
+    # //==  ** menu events type here **  ==// #
     def menu_event(self):
         # We need to get the position in the game loop not just init
         self.mx, self.my = pygame.mouse.get_pos()
@@ -107,6 +109,7 @@ class Evade:
                         finally:
                             self.start = False
 
+    # //==  ** menu draw type here **  ==// #
     def menu_draw(self):
         self.screen.fill(BLACK)
         self.background_screen.blit(self.background_image, [0, 0])
@@ -115,23 +118,22 @@ class Evade:
         draw_text("Created by: Andromeda#2302 // SaloonaSenpai", 20, WHITE, 370, 730, self.screen)
         # buttons
         self.start_button.button_draw(self.screen, GREEN)
-        draw_text("S T A R T", 85, BLACK, 390, 250, self.screen)
-        self.option_button.button_draw(self.screen, WHITE)
-        draw_text("O P T I O N", 85, BLACK, 370, 350, self.screen)
+        draw_text("S T A R T", 85, BLACK, 390, 350, self.screen)
         self.info_button.button_draw(self.screen, WHITE)
         draw_text("S T A T S", 85, BLACK, 390, 450, self.screen)
         self.exit_button.button_draw(self.screen, RED)
         draw_text("E X I T", 85, BLACK, 420, 550, self.screen)
 
+    # //==  ** game loop here  ==// #
     def in_game(self):
         while self.player.alive:
             self.game_event()
             self.game_draw()
             self.game_update()
             self.clock.tick(FPS)
-
         self.game_over()
 
+    # //==  ** game events type here **  ==// #
     def game_event(self):
         self.mx, self.my = pygame.mouse.get_pos()
         for event in pygame.event.get():
@@ -146,12 +148,13 @@ class Evade:
                 if pygame.mouse.get_pressed()[0]:
                     # and the position of the mouse is the start button rect
                     if self.button1.rect.collidepoint(self.mx, self.my):
-                        self.button1.click(self.bought, self.error)
+                        self.button1.click()
                     if self.button2.rect.collidepoint(self.mx, self.my):
-                        self.button2.click(self.bought, self.error)
+                        self.button2.click()
                     if self.button3.rect.collidepoint(self.mx, self.my):
-                        self.button3.click(self.bought, self.error)
+                        self.button3.click()
 
+    # //==  ** Game draw here **  ==// #
     def game_draw(self):
         # //==  ** Screen fill **  ==// #
         self.screen.fill(BLACK)
@@ -178,28 +181,27 @@ class Evade:
         draw_text(f"Health Cost: {self.button2.cost} ", 20, WHITE, 300, 35, self.screen)
         draw_text(f"Upgrade Cost: {self.button3.cost} ", 20, WHITE, 300, 55, self.screen)
 
+    # //==  ** menu update here **  ==// #
     def game_update(self):
         self.health_bar.update()
         self.energy_bar.update()
-
         self.player.control()
         self.player.animating_player()
         self.chest.player_interaction(self.player)
-
         self.bullet.update()
         self.enemy_bullet_collide()
-
         self.enemy_chance()
         self.thief.animating_player()
         self.chest.enemy_interaction(self.thief, self.player)
-
-        self.Ruby.player_coin(self.player, self.got_coin)
+        self.Ruby.player_coin(self.player)
         pygame.display.flip()
         pygame.display.update()
 
+    # //==  ** enemy chance **  ==// #
     def enemy_chance(self):
         self.count_time += 1
         self.random_number()
+        # there is a 90% chance of enemy spawnning
         if self.chance <= 90:
             self.enemy_sprite.add(self.thief)
             if self.thief.alive:
@@ -227,11 +229,13 @@ class Evade:
                 else:
                     self.mini_heal_potion.kill()
 
+    # //==  ** collision between enemy sprite and bullet **  ==// #
     def enemy_bullet_collide(self):
         for bullet in self.bullet:
             if pygame.sprite.collide_rect(bullet, self.thief):
                 self.thief.health -= 10
 
+    # //==  ** generate a random number **  ==// #
     def random_number(self):
         if self.count_time == 2000:
             self.chance = random.randint(1, 100)
@@ -242,6 +246,8 @@ class Evade:
             self.mini_energy_potion.spawn()
             self.mini_heal_potion.spawn()
 
+    # //==  ** generate a new game **  ==// #
+    # //==  ** allows the ability to restart the game and start it **  ==// #
     def start_new_game(self):
         self.player.alive = True
         self.player.health = 500.0
@@ -253,6 +259,7 @@ class Evade:
         self.coin_sprite.add(self.chest)
         self.dungeon_map.add_map()
 
+    # //==  ** Game over loop  **  ==// #
     def game_over(self):
         while self.start:
             self.over_event()
@@ -260,6 +267,7 @@ class Evade:
             self.over_update()
             self.clock.tick(FPS)
 
+    # //==  ** Game over event type here **  ==// #
     def over_event(self):
         # We need to get the position in the game loop not just init
         self.mx, self.my = pygame.mouse.get_pos()
@@ -289,6 +297,7 @@ class Evade:
                         finally:
                             self.start = False
 
+    # //==  ** Game over draw here **  ==// #
     def over_draw(self):
         self.screen.fill(BLACK)
         self.background_screen.blit(self.background_image, [0, 0])
@@ -303,6 +312,7 @@ class Evade:
         self.exit_button2.button_draw(self.screen, RED)
         draw_text("Exit the game", 60, BLACK, 390, 690, self.screen)
 
+    # //==  ** Game over update type here **  ==// #
     def over_update(self):
         # will add things later to get highscore and returns it
         pygame.display.flip()
