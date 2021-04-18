@@ -31,6 +31,7 @@ class Evade:
         self.help_button = Buttons(50, 70, 80, 50)
         self.info_button = Buttons(270, 450, 510, 60)
         self.exit_button = Buttons(270, 550, 510, 60)
+        self.menu_button = Buttons(900, 100, 20, 20)
         # for the game over // refer back to settings to see the Buttons class
         self.replay_button = Buttons(270, 480, 510, 60)
         self.back_button = Buttons(270, 580, 510, 60)
@@ -160,6 +161,9 @@ class Evade:
                         self.button2.click()
                     if self.button3.rect.collidepoint(self.mx, self.my):
                         self.button3.click()
+                    if self.menu_button.rect.collidepoint(self.mx, self.my):
+                        self.score.save_score(self.player.name, self.player.score, self.player.bag)
+                        self.menu()
 
     # //==  ** Game draw here **  ==// #
     def game_draw(self):
@@ -179,6 +183,7 @@ class Evade:
         self.bullet.draw(self.screen)
 
         # //==  ** Texts **  ==// #
+        self.menu_button.button_draw(self.screen, RED)
         draw_text("health: ", 25, WHITE, 10, 20, self.screen)
         draw_text("energy: ", 25, WHITE, 10, 40, self.screen)
         draw_text(f"{self.button3.level} ", 20, WHITE, 920, 15, self.screen)
@@ -388,6 +393,7 @@ class Evade:
         while self.start:
             self.help_event()
             self.help_draw()
+            self.score.find_highscore()
             pygame.display.flip()
             self.clock.tick(FPS)
 

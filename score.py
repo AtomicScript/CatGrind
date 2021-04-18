@@ -48,7 +48,7 @@ class Score:
             try:
                 new_score = scores.split(":")
                 self.names_list.append(new_score[0])
-                extra_score = int(new_score[1])
+                extra_score = float(new_score[1])
                 self.score_list.append(extra_score)
                 extra_coin = int(new_score[2])
                 self.coins_list.append(extra_coin)
@@ -71,3 +71,6 @@ class Score:
         draw_text(f"Stat 4:{self.data[-5]}", 30, YELLOW, 200, 410, screen)
         draw_text(f"Stat 5:{self.data[-6]}", 30, YELLOW, 200, 460, screen)
 
+
+shit = Score()
+shit.find_highscore()
