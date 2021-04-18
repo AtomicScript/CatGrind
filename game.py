@@ -4,6 +4,7 @@ from player import *
 from world import *
 from elements import *
 from enemy import *
+from score import Score
 
 
 class Evade:
@@ -27,6 +28,7 @@ class Evade:
         # //==  ** Button classes **  ==// #
         # for the menu // refer back to settings to see the Buttons class
         self.start_button = Buttons(270, 350, 510, 60)
+        self.help_button = Buttons(50, 70, 80, 50)
         self.info_button = Buttons(270, 450, 510, 60)
         self.exit_button = Buttons(270, 550, 510, 60)
         # for the game over // refer back to settings to see the Buttons class
@@ -44,6 +46,7 @@ class Evade:
         self.energy_bar = Energy_bar(self.player)
         self.Ruby = Ruby()
         self.chest = Chest(896, 672)
+        self.score = Score()
 
         # for the menu // refer back to settings to see the Buttons class
         self.button1 = energy_button(620, 10, self.player)
@@ -95,12 +98,12 @@ class Evade:
                         # then start the game
                         self.start_new_game()
                         self.in_game()
-                    if self.option_button.rect.collidepoint(self.mx, self.my):
-                        # then go to option screen
-                        print("Option button")
                     if self.info_button.rect.collidepoint(self.mx, self.my):
                         # then go to option screen
-                        print("information button")
+                        self.stat()
+                    if self.help_button.rect.collidepoint(self.mx, self.my):
+                        # then go to option screen
+                        self.help_screen()
                     if self.exit_button.rect.collidepoint(self.mx, self.my):
                         # then go to exit the game
                         pygame.quit()
@@ -117,6 +120,8 @@ class Evade:
         draw_text("CatGrind Main Menu", 100, WHITE, 220, 100, self.screen)
         draw_text("Created by: Andromeda#2302 // SaloonaSenpai", 20, WHITE, 370, 730, self.screen)
         # buttons
+        self.help_button.button_draw(self.screen, LighBlue)
+        draw_text("H E L P ", 20, BLACK, 70, 90, self.screen)
         self.start_button.button_draw(self.screen, GREEN)
         draw_text("S T A R T", 85, BLACK, 390, 350, self.screen)
         self.info_button.button_draw(self.screen, WHITE)
@@ -131,6 +136,7 @@ class Evade:
             self.game_draw()
             self.game_update()
             self.clock.tick(FPS)
+        self.score.save_score(self.player.name, self.player.score, self.player.bag)
         self.game_over()
 
     # //==  ** game events type here **  ==// #
@@ -138,6 +144,7 @@ class Evade:
         self.mx, self.my = pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
+                self.score.save_score(self.player.name, self.player.score, self.player.bag)
                 pygame.quit()
                 try:
                     sys.exit()
@@ -316,3 +323,136 @@ class Evade:
     def over_update(self):
         # will add things later to get highscore and returns it
         pygame.display.flip()
+
+    # //==  ** stat over loop  **  ==// #
+    def stat(self):
+        while self.start:
+            self.stat_event()
+            self.stat_draw()
+            self.stat_update()
+            self.clock.tick(FPS)
+
+    # //==  ** stat event type here **  ==// #
+    def stat_event(self):
+        # We need to get the position in the game loop not just init
+        self.mx, self.my = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                try:
+                    sys.exit()
+                finally:
+                    self.start = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # if mouse got pressed
+                if pygame.mouse.get_pressed()[0]:
+                    # and the position of the mouse is the start button rect
+                    if self.replay_button.rect.collidepoint(self.mx, self.my):
+                        # then start the game
+                        self.start_new_game()
+                        self.in_game()
+                    if self.back_button.rect.collidepoint(self.mx, self.my):
+                        # then go to menu screen
+                        self.menu()
+                    if self.exit_button2.rect.collidepoint(self.mx, self.my):
+                        # then go to exit the game
+                        pygame.quit()
+                        try:
+                            sys.exit()
+                        finally:
+                            self.start = False
+
+    # //==  ** stat  draw here **  ==// #
+    def stat_draw(self):
+        self.screen.fill(BLACK)
+        self.background_screen.blit(self.background_image, [0, 0])
+        # texts
+        draw_text("Game stat", 100, WHITE, 350, 50, self.screen)
+        draw_text("Created by: Andromeda#2302 // SaloonaSenpai", 20, WHITE, 370, 750, self.screen)
+        # score test here!
+        draw_text(f"Highscore: {self.score.highscore}", 40, YELLOW, 200, 150, self.screen)
+        self.score.stat_screen(self.screen)
+        # buttons
+        self.back_button.button_draw(self.screen, WHITE)
+        draw_text("Back to menu page", 60, BLACK, 355, 590, self.screen)
+        self.exit_button2.button_draw(self.screen, RED)
+        draw_text("Exit the game", 60, BLACK, 390, 690, self.screen)
+
+    # //==  ** Game over update type here **  ==// #
+    def stat_update(self):
+        # will add things later to get highscore and returns it
+        pygame.display.flip()
+
+    # //==  ** stat over loop  **  ==// #
+    def help_screen(self):
+        while self.start:
+            self.help_event()
+            self.help_draw()
+            pygame.display.flip()
+            self.clock.tick(FPS)
+
+    # //==  ** stat event type here **  ==// #
+    def help_event(self):
+        # We need to get the position in the game loop not just init
+        self.mx, self.my = pygame.mouse.get_pos()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                try:
+                    sys.exit()
+                finally:
+                    self.start = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                # if mouse got pressed
+                if pygame.mouse.get_pressed()[0]:
+                    # and the position of the mouse is the start button rect
+                    if self.replay_button.rect.collidepoint(self.mx, self.my):
+                        # then start the game
+                        self.start_new_game()
+                        self.in_game()
+                    if self.back_button.rect.collidepoint(self.mx, self.my):
+                        # then go to menu screen
+                        self.menu()
+                    if self.exit_button2.rect.collidepoint(self.mx, self.my):
+                        # then go to exit the game
+                        pygame.quit()
+                        try:
+                            sys.exit()
+                        finally:
+                            self.start = False
+
+    # //==  ** stat  draw here **  ==// #
+    def help_draw(self):
+        self.screen.fill(BLACK)
+        self.background_screen.blit(self.background_image, [0, 0])
+        # texts
+        draw_text("Help", 100, WHITE, 350, 50, self.screen)
+        draw_text("Created by: Andromeda#2302 // SaloonaSenpai", 20, WHITE, 370, 750, self.screen)
+        # buttons
+        button = Buttons(100,130, 800,400)
+        button.button_draw(self.screen, NotBlue)
+        help_image = pygame.image.load("image/help.png")
+        help_image_rect = help_image.get_rect()
+        help_image_rect.x, help_image_rect.y = 100, 130
+        self.screen.blit(help_image, help_image_rect)
+        draw_text("Game info", 40, WHITE, 600, 150, self.screen)
+        text1 = "Goal of the game is to collect rubies, deposit them into the chest"
+        text2 = "Beware of the thief that comes and steals from the chest! "
+        text3 = "clicking on yellow potion will refill your energy! careful of the cost!!"
+        text4 = "clicking on health potion will refill your health! careful of the cost!!"
+        text5 = "clicking on upgrade potion will upgrade your level! careful of the cost!!"
+        text6 = "upgrading levels allows double coins and double score!"
+        text7 = "if energy is 0 your health will get lower!"
+        draw_text(text1, 14, WHITE, 550, 200, self.screen)
+        draw_text(text2, 14, WHITE, 550, 220, self.screen)
+        draw_text(text3, 14, WHITE, 550, 240, self.screen)
+        draw_text(text4, 14, WHITE, 550, 260, self.screen)
+        draw_text(text5, 14, WHITE, 550, 280, self.screen)
+        draw_text(text6, 14, WHITE, 550, 300, self.screen)
+        draw_text(text7, 14, WHITE, 550, 320, self.screen)
+
+
+        self.back_button.button_draw(self.screen, WHITE)
+        draw_text("Back to menu page", 60, BLACK, 355, 590, self.screen)
+        self.exit_button2.button_draw(self.screen, RED)
+        draw_text("Exit the game", 60, BLACK, 390, 690, self.screen)

@@ -48,13 +48,13 @@ class Bullet(pygame.sprite.Sprite):
         self.restrict()
 
     def restrict(self):
-        if self.rect.y < 90:
+        if self.rect.y < 155:
             self.kill()
-        if self.rect.x < 50:
+        if self.rect.x < 80:
             self.kill()
-        if self.rect.x > 1000:
+        if self.rect.x > 945:
             self.kill()
-        if self.rect.y > 735:
+        if self.rect.y > 710:
             self.kill()
 
 

@@ -12,6 +12,8 @@ RED = (255, 0, 0)
 GREEN = (0, 255, 0)
 BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
+LighBlue = (173, 216, 230)
+NotBlue = (16, 18, 25)
 FPS = 40
 # for the player
 PLAYER_ACC = 3

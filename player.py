@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, screen):
         super().__init__()
         # //==  ** Basics **  ==// #
+        self.name = "Player1"
         self.health = 500.0
         self.energy = 100.0
         self.max_health = 1000.0
